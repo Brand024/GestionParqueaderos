@@ -1,8 +1,8 @@
 package com.GestorParcking.GestionParqueaderos.repository;
 
 import com.GestorParcking.GestionParqueaderos.models.Vehiculo;
-import com.GestorParcking.GestionParqueaderos.util.Conexion; // Importamos tu clase de conexión
-import java.sql.*; // Importamos las herramientas de SQL de Java
+import com.GestorParcking.GestionParqueaderos.util.Conexion;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
