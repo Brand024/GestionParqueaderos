@@ -1,5 +1,5 @@
 package com.GestorParcking.GestionParqueaderos.models;
-
+//---VEHICULO
 public class Vehiculo {
     private String placa;
     private int idTipo;
@@ -48,3 +48,4 @@ public Vehiculo(String placa, int idTipo, String modelo, String color) {
         this.color = color;
     }
 }
+
