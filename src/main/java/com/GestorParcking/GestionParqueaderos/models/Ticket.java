@@ -2,7 +2,6 @@ package com.GestorParcking.GestionParqueaderos.models;
 
 public class Ticket {
 
-    public class Ticket{
         private int id_ticket ;
         private String placa;
         private int id_espacio;
@@ -70,4 +69,4 @@ public class Ticket {
             this.valor_total = valor_total;
         }
     }
-}
+
