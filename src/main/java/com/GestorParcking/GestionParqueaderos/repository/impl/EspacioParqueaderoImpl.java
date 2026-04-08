@@ -1,6 +1,7 @@
-package com.GestorParcking.GestionParqueaderos.repository;
+package com.GestorParcking.GestionParqueaderos.repository.impl;
 
 import com.GestorParcking.GestionParqueaderos.models.EspacioParqueadero;
+import com.GestorParcking.GestionParqueaderos.repository.IEspacioParqueaderoDao;
 import com.GestorParcking.GestionParqueaderos.util.Conexion;
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,13 +1,13 @@
 package com.GestorParcking.GestionParqueaderos.models;
-import java.util.Date;
-public class Mensualidad {
+import java.sql.Date;
 
-    public class Mensualidad{
-        private int id_mensualidad;
-        private String placa;
-        private Date fecha_inicio;
-        private Date fecha_fin;
-        private boolean pagado;
+public class Mensualidad {
+    private int id_mensualidad;
+    private String placa;
+    private Date fecha_inicio;
+    private Date fecha_fin;
+    private float valor;
+    private boolean pagado;
 
         public Mensualidad() {
         }
@@ -59,5 +59,11 @@ public class Mensualidad {
         public void setPagado(boolean pagado) {
             this.pagado = pagado;
         }
+        public float getValor() {
+            return valor;
+        }
+
+        public void setValor(float valor) {
+            this.valor = valor;
+        }
     }
-}

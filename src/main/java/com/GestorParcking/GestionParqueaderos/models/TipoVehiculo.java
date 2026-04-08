@@ -1,7 +1,5 @@
 package com.GestorParcking.GestionParqueaderos.models;
 
-public class TipoVehiculo {
-
     public class TipoVehiculo {
         private int id_tipo;
         private  String nombre;
@@ -41,5 +39,3 @@ public class TipoVehiculo {
         }
     }
 
-    public class TipoVehiculoImpl extends TipoVehiculo { }
-}

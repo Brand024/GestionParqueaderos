@@ -1,11 +1,11 @@
-package com.GestorParcking.GestionParqueaderos.repository;
+package com.GestorParcking.GestionParqueaderos.repository.impl;
 
 import com.GestorParcking.GestionParqueaderos.models.Ticket;
+import com.GestorParcking.GestionParqueaderos.repository.ITicketDao;
 import com.GestorParcking.GestionParqueaderos.util.Conexion;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDateTime;
 
 public class TicketDaoImpl implements ITicketDao {
 
