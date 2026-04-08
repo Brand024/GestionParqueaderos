@@ -2,7 +2,6 @@ package com.GestorParcking.GestionParqueaderos.models;
 
 public class EspacioParqueadero {
 
-    public class EspacioParqueadero{
         private int id_espacio;
         private int numero;
         private int piso;
@@ -52,12 +51,12 @@ public class EspacioParqueadero {
             this.tipo_celda = tipo_celda;
         }
 
-        public boolean isEstado() {
-            return estado;
-        }
-
         public void setEstado(boolean estado) {
             this.estado = estado;
         }
+        public boolean isEstado() { // Para los booleanos, el "get" suele llamarse "is"
+            return estado;
+        }
+
     }
-}
+
