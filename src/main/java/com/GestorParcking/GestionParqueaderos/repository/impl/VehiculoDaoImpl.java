@@ -3,10 +3,14 @@ package com.GestorParcking.GestionParqueaderos.repository.impl;
 import com.GestorParcking.GestionParqueaderos.models.Vehiculo;
 import com.GestorParcking.GestionParqueaderos.repository.IVehiculoDao;
 import com.GestorParcking.GestionParqueaderos.util.Conexion;
+import org.springframework.stereotype.Repository;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Repository
 public class VehiculoDaoImpl implements IVehiculoDao {
     @Override
     public void registrar(Vehiculo vehiculo) {

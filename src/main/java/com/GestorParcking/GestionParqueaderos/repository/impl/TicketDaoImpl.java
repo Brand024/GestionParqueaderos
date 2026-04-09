@@ -3,10 +3,13 @@ package com.GestorParcking.GestionParqueaderos.repository.impl;
 import com.GestorParcking.GestionParqueaderos.models.Ticket;
 import com.GestorParcking.GestionParqueaderos.repository.ITicketDao;
 import com.GestorParcking.GestionParqueaderos.util.Conexion;
+import org.springframework.stereotype.Repository;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class TicketDaoImpl implements ITicketDao {
 
     @Override

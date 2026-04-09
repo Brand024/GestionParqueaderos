@@ -3,10 +3,13 @@ package com.GestorParcking.GestionParqueaderos.repository.impl;
 import com.GestorParcking.GestionParqueaderos.models.Mensualidad;
 import com.GestorParcking.GestionParqueaderos.repository.IMensualidadDao;
 import com.GestorParcking.GestionParqueaderos.util.Conexion;
+import org.springframework.stereotype.Repository;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class MensualidadDaoImpl implements IMensualidadDao {
 
     @Override
@@ -91,6 +94,28 @@ public class MensualidadDaoImpl implements IMensualidadDao {
             System.out.println("Mensualidad eliminada.");
         } catch (SQLException e) {
             System.err.println("Error al eliminar: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void actualizar(Mensualidad mensualidad) {
+        String sql = "UPDATE Mensualidad SET placa = ?, fecha_inicio = ?, fecha_fin = ?, valor = ?, pagado = ? WHERE id_mensualidad = ?";
+
+        try (Connection con = Conexion.conectar();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, mensualidad.getPlaca());
+            ps.setDate(2, mensualidad.getFecha_inicio());
+            ps.setDate(3, mensualidad.getFecha_fin());
+            ps.setFloat(4, mensualidad.getValor());
+            ps.setBoolean(5, mensualidad.isPagado());
+            ps.setInt(6, mensualidad.getId_mensualidad());
+
+            ps.executeUpdate();
+            System.out.println("Mensualidad actualizada en la base de datos.");
+
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar mensualidad: " + e.getMessage());
         }
     }
 }

@@ -4,8 +4,11 @@ import com.GestorParcking.GestionParqueaderos.models.*;
 import com.GestorParcking.GestionParqueaderos.repository.*;
 import com.GestorParcking.GestionParqueaderos.repository.impl.*;
 import com.GestorParcking.GestionParqueaderos.services.IParkingService;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
+@Service
 public class ParkingServiceImpl implements IParkingService {
 
     private IVehiculoDao vehiculoDao = new VehiculoDaoImpl();
@@ -44,20 +47,19 @@ public class ParkingServiceImpl implements IParkingService {
     @Override
     public Ticket registrarSalida(String placa) {
         Ticket ticket = ticketDao.buscarPorPlacaActivo(placa);
-
         if (ticket != null) {
-
+            // Verificamos si existe mensualidad para esta placa
             Mensualidad m = mensualidadDao.buscarPorPlaca(placa);
-            if (m != null) {
-                // Si tiene mensualidad
-                System.out.println("El vehículo " + placa + " tiene mensualidad activa.");
-            }
 
+            if (m != null) {
+
+                System.out.println("Vehículo con mensualidad. Aplicando tarifa $0");
+                ticket.setValor_total(0);
+            }
 
             ticketDao.registrarSalida(ticket);
             espacioDao.actualizarEstado(ticket.getId_espacio(), true);
-
-            return ticketDao.buscarPorPlacaActivo(placa);
+            return ticket;
         }
         return null;
     }
