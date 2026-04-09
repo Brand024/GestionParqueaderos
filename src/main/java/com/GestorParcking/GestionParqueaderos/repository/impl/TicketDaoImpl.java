@@ -17,9 +17,10 @@ public class TicketDaoImpl implements ITicketDao {
         // Usamos GETDATE() de SQL Server para la hora exacta de entrada
         String sql = "INSERT INTO Ticket (placa, id_espacio, hora_entrada, valor_total) VALUES (?, ?, GETDATE(), 0)";
 
-        try (Connection con = Conexion.conectar();
+        try (Connection con = Conexion.conectar();  
              PreparedStatement ps = con.prepareStatement(sql)) {
 
+              // Asignamos placa y espacio al ticket
             ps.setString(1, ticket.getPlaca());
             ps.setInt(2, ticket.getId_espacio());
 
@@ -31,6 +32,7 @@ public class TicketDaoImpl implements ITicketDao {
         }
     }
     @Override
+    // Busca un ticket activo (sin hora de salida) por placa
     public Ticket buscarPorPlacaActivo(String placa) {
         String sql = "SELECT * FROM Ticket WHERE placa = ? AND hora_salida IS NULL";
         Ticket ticket = null;
@@ -41,7 +43,7 @@ public class TicketDaoImpl implements ITicketDao {
             ps.setString(1, placa);
             ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
+            if (rs.next()) {  // Construimos el objeto Ticket con los datos obtenidos
                 ticket = new Ticket();
                 ticket.setId_ticket(rs.getInt("id_ticket"));
                 ticket.setPlaca(rs.getString("placa"));
@@ -82,7 +84,7 @@ public class TicketDaoImpl implements ITicketDao {
 
 
     @Override
-    public List<Ticket> listarHistorial() {
+    public List<Ticket> listarHistorial() {  // Obtiene todos los tickets ordenados por hora de entrada (más recientes primero)
         String sql = "SELECT * FROM Ticket ORDER BY hora_entrada DESC";
         List<Ticket> lista = new ArrayList<>();
 
@@ -90,7 +92,7 @@ public class TicketDaoImpl implements ITicketDao {
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {
+            while (rs.next()) {  // Recorremos el resultado y construimos la lista de tickets
                 Ticket t = new Ticket();
                 t.setId_ticket(rs.getInt("id_ticket"));
                 t.setPlaca(rs.getString("placa"));
