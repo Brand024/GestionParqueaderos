@@ -1,7 +1,7 @@
 package com.GestorParcking.GestionParqueaderos.models;
 
 public class Ticket {
-
+//atributos
         private int id_ticket ;
         private String placa;
         private int id_espacio;
@@ -9,7 +9,7 @@ public class Ticket {
         private String hora_salida;
         private float valor_total;
 
-        public Ticket() {
+        public Ticket() { //constructor vacio y con parametros
         }
 
         public Ticket(int id_ticket,String placa,int id_espacio,String hora_entrada,String hora_salida,float valor_total) {
@@ -20,7 +20,7 @@ public class Ticket {
             this.hora_salida = hora_salida;
             this.valor_total= valor_total;
         }
-
+//getters y setters
         public int getId_ticket() {
             return id_ticket;
         }
