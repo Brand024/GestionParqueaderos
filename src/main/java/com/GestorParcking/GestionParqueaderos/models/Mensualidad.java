@@ -1,7 +1,7 @@
 package com.GestorParcking.GestionParqueaderos.models;
 import java.sql.Date;
 
-public class Mensualidad {
+public class Mensualidad {  //atributos
     private int id_mensualidad;
     private String placa;
     private Date fecha_inicio;
@@ -9,7 +9,7 @@ public class Mensualidad {
     private float valor;
     private boolean pagado;
 
-        public Mensualidad() {
+        public Mensualidad() {  //constructor vacio y con parametros
         }
 
         public Mensualidad(int id_mensualidad, String placa, Date fecha_inicio, Date fecha_fin, boolean pagado) {
@@ -20,6 +20,7 @@ public class Mensualidad {
             this.pagado = pagado;
         }
 
+    //getters y setters
         public int getId_mensualidad() {
             return id_mensualidad;
         }
