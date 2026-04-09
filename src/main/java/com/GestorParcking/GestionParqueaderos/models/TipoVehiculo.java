@@ -1,11 +1,11 @@
 package com.GestorParcking.GestionParqueaderos.models;
 
-    public class TipoVehiculo {
+    public class TipoVehiculo {  // atributos
         private int id_tipo;
         private  String nombre;
         private float tarifa_minuto;
 
-        public TipoVehiculo() {
+        public TipoVehiculo() {  //constructor vacio y con parametros
         }
 
         public TipoVehiculo(int id_tipo, String nombre, float tarifa_minuto) {
