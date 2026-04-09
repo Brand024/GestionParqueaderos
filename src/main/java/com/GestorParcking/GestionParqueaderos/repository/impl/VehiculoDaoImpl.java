@@ -14,7 +14,7 @@ import java.util.List;
 public class VehiculoDaoImpl implements IVehiculoDao {
     @Override
     public void registrar(Vehiculo vehiculo) {
-        String sql = "INSERT INTO Vehiculo (placa, id_tipo, modelo, color) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Vehiculo (placa, id_tipo, modelo, color) VALUES (?, ?, ?, ?)"; // Sentencia SQL para insertar un nuevo vehículo
 
         try (Connection con = Conexion.conectar();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -28,14 +28,14 @@ public class VehiculoDaoImpl implements IVehiculoDao {
             ps.executeUpdate(); // Ejecuta la inserción en SQL Server
             System.out.println("Vehículo registrado con éxito.");
 
-        } catch (SQLException e) {
+        } catch (SQLException e) { 
             System.err.println("Error al registrar vehículo: " + e.getMessage());
         }
     }
 
     @Override
     public Vehiculo buscarPorPlaca(String placa) {
-        String sql = "SELECT * FROM Vehiculo WHERE placa = ?";
+        String sql = "SELECT * FROM Vehiculo WHERE placa = ?"; // Consulta SQL para buscar un vehículo por su placa
         Vehiculo vehiculo = null;
 
         try (Connection con = Conexion.conectar();
@@ -45,7 +45,7 @@ public class VehiculoDaoImpl implements IVehiculoDao {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                vehiculo = new Vehiculo();
+                vehiculo = new Vehiculo();  // Construimos el objeto Vehiculo con los datos obtenidos
                 vehiculo.setPlaca(rs.getString("placa"));
                 vehiculo.setIdTipo(rs.getInt("id_tipo"));
                 vehiculo.setModelo(rs.getString("modelo"));
@@ -59,14 +59,15 @@ public class VehiculoDaoImpl implements IVehiculoDao {
 
 
     @Override
-    public List<Vehiculo> listarTodos() {
+    public List<Vehiculo> listarTodos() {  // Consulta SQL para obtener todos los vehículos
         String sql = "SELECT * FROM Vehiculo";
         List<Vehiculo> lista = new ArrayList<>();
 
         try (Connection con = Conexion.conectar();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
-
+            
+// Recorremos el resultado y construimos la lista de vehículos
             while (rs.next()) {
                 Vehiculo v = new Vehiculo();
                 v.setPlaca(rs.getString("placa"));
@@ -82,7 +83,7 @@ public class VehiculoDaoImpl implements IVehiculoDao {
     }
 
     @Override
-    public void actualizar(Vehiculo vehiculo) {
+    public void actualizar(Vehiculo vehiculo) { // Sentencia SQL para actualizar los datos de un vehículo
         String sql = "UPDATE Vehiculo SET id_tipo = ?, modelo = ?, color = ? WHERE placa = ?";
 
         try (Connection con = Conexion.conectar();
@@ -103,7 +104,7 @@ public class VehiculoDaoImpl implements IVehiculoDao {
     }
 
     @Override
-    public void eliminar(String placa) {
+    public void eliminar(String placa) {  // Sentencia SQL para eliminar un vehículo por su placa
         String sql = "DELETE FROM Vehiculo WHERE placa = ?";
 
         try (Connection con = Conexion.conectar();
