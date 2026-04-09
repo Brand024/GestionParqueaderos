@@ -47,27 +47,31 @@ Create table Ticket (
 );
 
 ---- insert
-Insert TipoVehiculo values
-(1, 'auto', 50),
-(2, 'motocicleta', 30),
-(1, 'auto', 50);
 
-insert Vehiculo values
-('ABC123', 1, 'corolla', 'Blanco'),
-('DEF45G', 2, 'YZF', 'negro'),
-('HIJ678', 1, 'spark', 'gris');
+Insert into TipoVehiculo (id_tipo, nombre, tarifa_minuto) values
+(1, 'Auto', 50.00),
+(2, 'Motocicleta', 30.00);
 
-insert EspacioParqueadero values
-(1, 101, 1, 'auto', 1),
-(2, 105, 2, 'motocicleta', 1),
-(3, 103, 3, 'auto', 1);
+-- 2. Insertar Vehículos
+insert into Vehiculo (placa, id_tipo, modelo, color) values
+('ABC123', 1, 'Corolla', 'Blanco'),
+('DEF45G', 2, 'YZF', 'Negro'),
+('HIJ678', 1, 'Spark', 'Gris');
 
-insert Mensualidad values
-(01, 'ABC123', '2026-04-07', '2026-04-08', 1),
-(02, 'DEF45G', '2024-09-11', '2024-09-11', 1),
-(03, 'HIJ678', '2026-08-02', '2026-08-03', 0);
+-- 3. Insertar Espacios
+insert into EspacioParqueadero (id_espacio, numero, piso, tipo_celda, estado) values
+(1, 101, 1, 'Auto', 1),
+(2, 105, 2, 'Motocicleta', 1),
+(3, 103, 3, 'Auto', 1);
 
-insert Ticket values 
-(1, 'ABC123', 1, '08:30:00', '10:12:00', 78000),
-(5, 'DEF45G', 2, '12:20:00', '16:22:09',7200 ),
-(6, 'HIJ678', 3, '20:15:00', '08:50:00', 39000);
+-- 4. Insertar Mensualidades
+insert into Mensualidad (id_mensualidad, placa, fecha_inicio, fecha_fin, pagado) values
+(1, 'ABC123', '2026-04-01', '2026-05-01', 1),
+(2, 'DEF45G', '2026-04-01', '2026-05-01', 1),
+(3, 'HIJ678', '2026-04-01', '2026-05-01', 0);
+
+-- 5. Insertar Tickets
+insert into Ticket (id_ticket, placa, id_espacio, hora_entrada, hora_salida, valor_total) values
+(1, 'ABC123', 1, '2026-04-08 08:30:00', '2026-04-08 10:12:00', 5100), -- 102 min * $50
+(2, 'DEF45G', 2, '2026-04-08 12:20:00', '2026-04-08 16:22:00', 7260), -- 242 min * $30
+(3, 'HIJ678', 3, '2026-04-08 20:15:00', '2026-04-09 08:50:00', 37750); -- Ejemplo amanecida
