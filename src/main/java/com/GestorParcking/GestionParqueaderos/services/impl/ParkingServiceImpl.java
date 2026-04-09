@@ -16,11 +16,10 @@ public class ParkingServiceImpl implements IParkingService {
     private IEspacioParqueaderoDao espacioDao = new EspacioParqueaderoImpl();
     private IMensualidadDao mensualidadDao = new MensualidadDaoImpl(); // <--- NUEVO
 
-     // Buscar vehículo por placa, si no existe se crea uno nuevo
-        Vehiculo v = vehiculoDao.buscarPorPlaca(placa);
+    
     @Override
     public Ticket registrarEntrada(String placa, int idTipoVehiculo) {
-        Vehiculo v = vehiculoDao.buscarPorPlaca(placa);
+        Vehiculo v = vehiculoDao.buscarPorPlaca(placa);  // Buscar vehículo por placa, si no existe se crea uno nuevo
         if (v == null) {
             v = new Vehiculo();
             v.setPlaca(placa);
