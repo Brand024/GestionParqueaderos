@@ -2,7 +2,7 @@ package com.GestorParcking.GestionParqueaderos.services;
 
 import com.GestorParcking.GestionParqueaderos.models.Mensualidad;
 import java.util.List;
-
+// Interfaz que define las operaciones del servicio de Mensualidad
 public interface IMensualidadService {
 
 
