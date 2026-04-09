@@ -3,6 +3,7 @@ package com.GestorParcking.GestionParqueaderos.repository;
 import com.GestorParcking.GestionParqueaderos.models.EspacioParqueadero;
 import java.util.List;
 
+//define las operaciones básicas sobre la entidad EspacioParqueadero
 public interface IEspacioParqueaderoDao {
     List<EspacioParqueadero> listarDisponibles();
     // Cambiamos String por boolean para que coincida con el BIT de SQL
