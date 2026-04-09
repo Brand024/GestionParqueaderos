@@ -1,14 +1,14 @@
 package com.GestorParcking.GestionParqueaderos.models;
 
 public class EspacioParqueadero {
-
+//atributos
         private int id_espacio;
         private int numero;
         private int piso;
         private String tipo_celda;
         private boolean estado;
 
-        public EspacioParqueadero() {
+        public EspacioParqueadero() { //constructor vacio y con parametros
         }
 
         public EspacioParqueadero(int id_espacio,int numero,int piso,String tipo_celda,boolean estado) {
@@ -19,6 +19,7 @@ public class EspacioParqueadero {
             this.estado = estado;
         }
 
+        //getters y setters
         public int getId_espacio() {
             return id_espacio;
         }
