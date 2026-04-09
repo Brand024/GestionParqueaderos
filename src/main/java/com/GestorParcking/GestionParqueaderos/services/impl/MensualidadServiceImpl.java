@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+    // DAO encargado de la persistencia de las mensualidades
 public class MensualidadServiceImpl implements IMensualidadService {
 
     private IMensualidadDao mensualidadDao = new MensualidadDaoImpl();
