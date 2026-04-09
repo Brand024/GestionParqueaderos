@@ -14,6 +14,7 @@ package com.GestorParcking.GestionParqueaderos.models;
             this.tarifa_minuto = tarifa_minuto;
         }
 
+        //getters y setters
         public int getId_tipo() {
             return id_tipo;
         }
