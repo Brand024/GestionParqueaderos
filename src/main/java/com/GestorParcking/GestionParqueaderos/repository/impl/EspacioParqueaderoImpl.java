@@ -13,7 +13,7 @@ import java.util.List;
 public class EspacioParqueaderoImpl implements IEspacioParqueaderoDao {
 
     @Override
-    public List<EspacioParqueadero> listarDisponibles() {
+    public List<EspacioParqueadero> listarDisponibles() {  // Consulta SQL para obtener todos los espacios que están disponibles (estado = 1)
         String sql = "SELECT * FROM EspacioParqueadero WHERE estado = 1";
         List<EspacioParqueadero> lista = new ArrayList<>();
 
@@ -21,7 +21,7 @@ public class EspacioParqueaderoImpl implements IEspacioParqueaderoDao {
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {
+            while (rs.next()) {  // Recorremos el resultado y construimos la lista de espacios disponibles
                 EspacioParqueadero e = new EspacioParqueadero();
                 e.setId_espacio(rs.getInt("id_espacio"));
                 e.setNumero(rs.getInt("numero"));
@@ -36,7 +36,7 @@ public class EspacioParqueaderoImpl implements IEspacioParqueaderoDao {
     }
 
     @Override
-    public void actualizarEstado(int idEspacio, boolean estaDisponible) {
+    public void actualizarEstado(int idEspacio, boolean estaDisponible) {  // Actualiza el estado de un espacio (true = disponible, false = ocupado)
         String sql = "UPDATE EspacioParqueadero SET estado = ? WHERE id_espacio = ?";
 
         try (Connection con = Conexion.conectar();
@@ -53,7 +53,7 @@ public class EspacioParqueaderoImpl implements IEspacioParqueaderoDao {
     }
 
     @Override
-    public EspacioParqueadero buscarPorNumero(int numero) {
+    public EspacioParqueadero buscarPorNumero(int numero) {  // Busca un espacio de parqueadero según su número
         String sql = "SELECT * FROM EspacioParqueadero WHERE numero = ?";
         EspacioParqueadero espacio = null;
 
@@ -63,7 +63,7 @@ public class EspacioParqueaderoImpl implements IEspacioParqueaderoDao {
             ps.setInt(1, numero);
             ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
+            if (rs.next()) {  // Construimos el objeto EspacioParqueadero con los datos obtenidos
                 espacio = new EspacioParqueadero();
                 espacio.setId_espacio(rs.getInt("id_espacio"));
                 espacio.setNumero(rs.getInt("numero"));
