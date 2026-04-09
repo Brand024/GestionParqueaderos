@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public class TipoVehiculoDaoImpl implements ITipoVehiculoDao {
 
-    @Override
+    @Override // Consulta SQL para obtener todos los tipos de vehículo
     public List<TipoVehiculo> listarTipos() {
         String sql = "SELECT * FROM TipoVehiculo";
         List<TipoVehiculo> lista = new ArrayList<>();
@@ -21,6 +21,7 @@ public class TipoVehiculoDaoImpl implements ITipoVehiculoDao {
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
+            // Recorremos el resultado y construimos la lista de objetos TipoVehiculo
             while (rs.next()) {
                 TipoVehiculo tv = new TipoVehiculo();
                 tv.setId_tipo(rs.getInt("id_tipo"));
@@ -35,7 +36,7 @@ public class TipoVehiculoDaoImpl implements ITipoVehiculoDao {
     }
 
     @Override
-    public TipoVehiculo buscarPorId(int idTipo) {
+    public TipoVehiculo buscarPorId(int idTipo) { // Consulta SQL para buscar un tipo de vehículo por su ID
         String sql = "SELECT * FROM TipoVehiculo WHERE id_tipo = ?";
         TipoVehiculo tipo = null;
 
@@ -43,7 +44,7 @@ public class TipoVehiculoDaoImpl implements ITipoVehiculoDao {
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, idTipo);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+            if (rs.next()) { // Construimos el objeto TipoVehiculo con los datos obtenidos
                 tipo = new TipoVehiculo();
                 tipo.setId_tipo(rs.getInt("id_tipo"));
                 tipo.setNombre(rs.getString("nombre_tipo"));
