@@ -15,37 +15,37 @@ import java.util.List;
 public class MensualidadController {
 
     @Autowired
-    private IMensualidadService mensualidadService;
+    private IMensualidadService mensualidadService;   // Inyección del servicio que maneja la lógica de mensualidades
 
     // 1. GET: Listar todos
     @Operation(summary = "Obtener todas las mensualidades")
     @GetMapping
     public ResponseEntity<List<Mensualidad>> listar() {
-        return new ResponseEntity<>(mensualidadService.listarTodas(), HttpStatus.OK);
+        return new ResponseEntity<>(mensualidadService.listarTodas(), HttpStatus.OK); // Devuelve la lista completa con código 200 OK
     }
 
     // 2. POST: Crear nueva
     @Operation(summary = "Registrar una nueva mensualidad")
     @PostMapping
     public ResponseEntity<String> crear(@RequestBody Mensualidad mensualidad) {
-        mensualidadService.registrar(mensualidad);
-        return new ResponseEntity<>("Mensualidad creada con éxito", HttpStatus.CREATED);
+        mensualidadService.registrar(mensualidad); // Llamamos al servicio para registrar la mensualidad
+        return new ResponseEntity<>("Mensualidad creada con éxito", HttpStatus.CREATED);  // Respondemos con 201 CREATED si se registra correctamente
     }
 
     // 3. PUT: Actualizar datos
     @Operation(summary = "Actualizar datos de una mensualidad")
     @PutMapping("/{id}")
     public ResponseEntity<String> actualizar(@PathVariable int id, @RequestBody Mensualidad mensualidad) {
-        mensualidad.setId_mensualidad(id);
+        mensualidad.setId_mensualidad(id);  // Asignamos el ID recibido en la URL al objeto mensualidad
         mensualidadService.actualizar(mensualidad); // Asegúrate de tener este método en el Service
-        return new ResponseEntity<>("Datos actualizados", HttpStatus.OK);
+        return new ResponseEntity<>("Datos actualizados", HttpStatus.OK);  // Respondemos con 200 OK si la actualización fue exitosa
     }
 
     // 4. DELETE: Eliminar
     @Operation(summary = "Eliminar o cancelar una mensualidad")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable int id) {
-        mensualidadService.eliminar(id);
-        return new ResponseEntity<>("Mensualidad eliminada correctamente", HttpStatus.OK);
+        mensualidadService.eliminar(id); // Llamamos al servicio para eliminar la mensualidad por ID
+        return new ResponseEntity<>("Mensualidad eliminada correctamente", HttpStatus.OK);  // Respondemos con 200 OK si se elimina correctamente
     }
 }
