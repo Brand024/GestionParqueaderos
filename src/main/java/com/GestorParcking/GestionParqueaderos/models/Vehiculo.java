@@ -1,12 +1,12 @@
 package com.GestorParcking.GestionParqueaderos.models;
 
-public class Vehiculo {
+public class Vehiculo {  //atrubutos
     private String placa;
     private int idTipo;
     private String modelo;
     private String color;
 
-public Vehiculo(){
+public Vehiculo(){  //constructor vacio y con parametros
 }
 
 public Vehiculo(String placa, int idTipo, String modelo, String color) {
@@ -16,6 +16,7 @@ public Vehiculo(String placa, int idTipo, String modelo, String color) {
         this.color = color;
 }
 
+    //getters y setters
     public String getPlaca() {
         return placa;
     }
