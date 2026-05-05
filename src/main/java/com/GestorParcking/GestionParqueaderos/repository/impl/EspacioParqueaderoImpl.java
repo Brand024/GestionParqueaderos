@@ -14,7 +14,7 @@ public class EspacioParqueaderoImpl implements IEspacioParqueaderoDao {
 
     @Override
     public List<EspacioParqueadero> listarDisponibles() {  // Consulta SQL para obtener todos los espacios que están disponibles (estado = 1)
-        String sql = "SELECT * FROM EspacioParqueadero WHERE estado = 1";
+        String sql = "SELECT id_espacio, numero, piso, tipo_celda, estado FROM EspacioParqueadero WHERE estado = 1";
         List<EspacioParqueadero> lista = new ArrayList<>();
 
         try (Connection con = Conexion.conectar();
@@ -54,7 +54,7 @@ public class EspacioParqueaderoImpl implements IEspacioParqueaderoDao {
 
     @Override
     public EspacioParqueadero buscarPorNumero(int numero) {  // Busca un espacio de parqueadero según su número
-        String sql = "SELECT * FROM EspacioParqueadero WHERE numero = ?";
+        String sql ="SELECT id, numero, estado, tipo FROM EspacioParqueadero WHERE numero = ?";
         EspacioParqueadero espacio = null;
 
         try (Connection con = Conexion.conectar();

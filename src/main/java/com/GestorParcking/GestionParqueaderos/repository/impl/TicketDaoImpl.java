@@ -34,7 +34,7 @@ public class TicketDaoImpl implements ITicketDao {
     @Override
     // Busca un ticket activo (sin hora de salida) por placa
     public Ticket buscarPorPlacaActivo(String placa) {
-        String sql = "SELECT * FROM Ticket WHERE placa = ? AND hora_salida IS NULL";
+        String sql = "SELECT id, placa, hora_ingreso, tarifa_id, estado FROM Ticket WHERE placa = ? AND hora_salida IS NULL";
         Ticket ticket = null;
 
         try (Connection con = Conexion.conectar();
@@ -85,7 +85,7 @@ public class TicketDaoImpl implements ITicketDao {
 
     @Override
     public List<Ticket> listarHistorial() {  // Obtiene todos los tickets ordenados por hora de entrada (más recientes primero)
-        String sql = "SELECT * FROM Ticket ORDER BY hora_entrada DESC";
+        String sql = "SELECT id_ticket, placa, hora_entrada, hora_salida, valor_total, tarifa_id FROM Ticket ORDER BY hora_entrada DESC";
         List<Ticket> lista = new ArrayList<>();
 
         try (Connection con = Conexion.conectar();

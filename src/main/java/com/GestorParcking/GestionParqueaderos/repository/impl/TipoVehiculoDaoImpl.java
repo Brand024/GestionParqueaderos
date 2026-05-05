@@ -14,7 +14,7 @@ public class TipoVehiculoDaoImpl implements ITipoVehiculoDao {
 
     @Override // Consulta SQL para obtener todos los tipos de vehículo
     public List<TipoVehiculo> listarTipos() {
-        String sql = "SELECT * FROM TipoVehiculo";
+        String sql = "SELECT id_tipo, descripcion, tarifa_minuto FROM TipoVehiculo";
         List<TipoVehiculo> lista = new ArrayList<>();
 
         try (Connection con = Conexion.conectar();
@@ -37,7 +37,7 @@ public class TipoVehiculoDaoImpl implements ITipoVehiculoDao {
 
     @Override
     public TipoVehiculo buscarPorId(int idTipo) { // Consulta SQL para buscar un tipo de vehículo por su ID
-        String sql = "SELECT * FROM TipoVehiculo WHERE id_tipo = ?";
+        String sql = "SELECT id_tipo, descripcion, tarifa_minuto FROM TipoVehiculo WHERE id_tipo = ?";
         TipoVehiculo tipo = null;
 
         try (Connection con = Conexion.conectar();

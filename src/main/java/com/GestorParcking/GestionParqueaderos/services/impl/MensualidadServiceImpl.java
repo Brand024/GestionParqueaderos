@@ -2,16 +2,21 @@ package com.GestorParcking.GestionParqueaderos.services.impl;
 
 import com.GestorParcking.GestionParqueaderos.models.Mensualidad;
 import com.GestorParcking.GestionParqueaderos.repository.IMensualidadDao;
-import com.GestorParcking.GestionParqueaderos.repository.impl.MensualidadDaoImpl;
 import com.GestorParcking.GestionParqueaderos.services.IMensualidadService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-    // DAO encargado de la persistencia de las mensualidades
 public class MensualidadServiceImpl implements IMensualidadService {
 
-    private IMensualidadDao mensualidadDao = new MensualidadDaoImpl();
+    private final IMensualidadDao mensualidadDao;
+
+    // Inyección de dependencia por constructor
+    @Autowired
+    public MensualidadServiceImpl(IMensualidadDao mensualidadDao) {
+        this.mensualidadDao = mensualidadDao;
+    }
 
     @Override
     public void registrar(Mensualidad mensualidad) {
@@ -38,3 +43,4 @@ public class MensualidadServiceImpl implements IMensualidadService {
         mensualidadDao.eliminar(idMensualidad);
     }
 }
+

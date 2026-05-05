@@ -36,7 +36,7 @@ public class MensualidadDaoImpl implements IMensualidadDao {
 
     @Override
     public List<Mensualidad> listarTodas() {  // Consulta SQL para obtener todas las mensualidades
-        String sql = "SELECT * FROM Mensualidad";
+        String sql = "SELECT id, valor, fecha_pago, placa_vehiculo FROM Mensualidad";
         List<Mensualidad> lista = new ArrayList<>();
 
         try (Connection con = Conexion.conectar();
@@ -62,7 +62,7 @@ public class MensualidadDaoImpl implements IMensualidadDao {
 
     @Override
     public Mensualidad buscarPorPlaca(String placa) {  // Busca una mensualidad asociada a la placa de un vehículo
-        String sql = "SELECT * FROM Mensualidad WHERE placa = ?";
+        String sql = "SELECT id, valor, fecha_pago, placa FROM Mensualidad WHERE placa = ?";
         Mensualidad m = null;
         try (Connection con = Conexion.conectar();
              PreparedStatement ps = con.prepareStatement(sql)) {

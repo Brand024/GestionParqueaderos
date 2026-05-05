@@ -2,8 +2,8 @@ package com.GestorParcking.GestionParqueaderos.services.impl;
 
 import com.GestorParcking.GestionParqueaderos.models.*;
 import com.GestorParcking.GestionParqueaderos.repository.*;
-import com.GestorParcking.GestionParqueaderos.repository.impl.*;
 import com.GestorParcking.GestionParqueaderos.services.IParkingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,15 +11,24 @@ import java.util.List;
 @Service
 public class ParkingServiceImpl implements IParkingService {
 
-    private IVehiculoDao vehiculoDao = new VehiculoDaoImpl();
-    private ITicketDao ticketDao = new TicketDaoImpl();
-    private IEspacioParqueaderoDao espacioDao = new EspacioParqueaderoImpl();
-    private IMensualidadDao mensualidadDao = new MensualidadDaoImpl(); // <--- NUEVO
+    private final IVehiculoDao vehiculoDao;
+    private final ITicketDao ticketDao;
+    private final IEspacioParqueaderoDao espacioDao;
+    private final IMensualidadDao mensualidadDao;
 
-    
+    // Inyección de dependencias por constructor
+    @Autowired
+    public ParkingServiceImpl(IVehiculoDao vehiculoDao, ITicketDao ticketDao,
+                              IEspacioParqueaderoDao espacioDao, IMensualidadDao mensualidadDao) {
+        this.vehiculoDao = vehiculoDao;
+        this.ticketDao = ticketDao;
+        this.espacioDao = espacioDao;
+        this.mensualidadDao = mensualidadDao;
+    }
+
     @Override
     public Ticket registrarEntrada(String placa, int idTipoVehiculo) {
-        Vehiculo v = vehiculoDao.buscarPorPlaca(placa);  // Buscar vehículo por placa, si no existe se crea uno nuevo
+        Vehiculo v = vehiculoDao.buscarPorPlaca(placa);
         if (v == null) {
             v = new Vehiculo();
             v.setPlaca(placa);
@@ -50,7 +59,6 @@ public class ParkingServiceImpl implements IParkingService {
     }
 
     @Override
-    // Buscar ticket activo por placa
     public Ticket registrarSalida(String placa) {
         Ticket ticket = ticketDao.buscarPorPlacaActivo(placa);
         if (ticket != null) {
@@ -59,7 +67,6 @@ public class ParkingServiceImpl implements IParkingService {
 
             if (m != null) {
                 // Si tiene mensualidad, no se cobra tarifa
-
                 System.out.println("Vehículo con mensualidad. Aplicando tarifa $0");
                 ticket.setValor_total(0);
             }
