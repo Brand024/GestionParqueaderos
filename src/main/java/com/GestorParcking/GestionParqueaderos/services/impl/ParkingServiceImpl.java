@@ -28,6 +28,11 @@ public class ParkingServiceImpl implements IParkingService {
 
     @Override
     public Ticket registrarEntrada(String placa, int idTipoVehiculo) {
+        // Validar que la placa no sea nula o vacía
+        if (placa == null || placa.trim().isEmpty()) {
+            throw new IllegalArgumentException("La placa no puede estar vacía");
+        }
+
         Vehiculo v = vehiculoDao.buscarPorPlaca(placa);
         if (v == null) {
             v = new Vehiculo();
@@ -39,8 +44,7 @@ public class ParkingServiceImpl implements IParkingService {
         // Obtener lista de espacios disponibles
         List<EspacioParqueadero> disponibles = espacioDao.listarDisponibles();
         if (disponibles.isEmpty()) {
-            System.err.println("No hay espacios disponibles");
-            return null;
+            throw new RuntimeException("No hay espacios de parqueadero disponibles en este momento");
         }
 
         // Asignar el primer espacio disponible
@@ -60,22 +64,29 @@ public class ParkingServiceImpl implements IParkingService {
 
     @Override
     public Ticket registrarSalida(String placa) {
-        Ticket ticket = ticketDao.buscarPorPlacaActivo(placa);
-        if (ticket != null) {
-            // Verificar si el vehículo tiene mensualidad
-            Mensualidad m = mensualidadDao.buscarPorPlaca(placa);
-
-            if (m != null) {
-                // Si tiene mensualidad, no se cobra tarifa
-                System.out.println("Vehículo con mensualidad. Aplicando tarifa $0");
-                ticket.setValor_total(0);
-            }
-
-            // Registrar salida y liberar espacio
-            ticketDao.registrarSalida(ticket);
-            espacioDao.actualizarEstado(ticket.getId_espacio(), true);
-            return ticket;
+        // Validar que la placa no sea nula o vacía
+        if (placa == null || placa.trim().isEmpty()) {
+            throw new IllegalArgumentException("La placa no puede estar vacía");
         }
-        return null;
+
+        Ticket ticket = ticketDao.buscarPorPlacaActivo(placa);
+        if (ticket == null) {
+            throw new RuntimeException("No se encontró un ticket activo para la placa: " + placa);
+        }
+
+        // Verificar si el vehículo tiene mensualidad
+        Mensualidad m = mensualidadDao.buscarPorPlaca(placa);
+
+        if (m != null && m.isPagado()) {
+            // Si tiene mensualidad pagada, no se cobra tarifa
+            System.out.println("Vehículo con mensualidad vigente. Aplicando tarifa $0");
+            ticket.setValor_total(0);
+        }
+
+        // Registrar salida y liberar espacio
+        ticketDao.registrarSalida(ticket);
+        espacioDao.actualizarEstado(ticket.getId_espacio(), true);
+
+        return ticket;
     }
 }

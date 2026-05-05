@@ -54,7 +54,7 @@ public class EspacioParqueaderoImpl implements IEspacioParqueaderoDao {
 
     @Override
     public EspacioParqueadero buscarPorNumero(int numero) {  // Busca un espacio de parqueadero según su número
-        String sql ="SELECT id, numero, estado, tipo FROM EspacioParqueadero WHERE numero = ?";
+        String sql = "SELECT id_espacio, numero, piso, tipo_celda, estado FROM EspacioParqueadero WHERE numero = ?";
         EspacioParqueadero espacio = null;
 
         try (Connection con = Conexion.conectar();
