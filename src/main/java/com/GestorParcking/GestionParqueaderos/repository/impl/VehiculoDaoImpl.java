@@ -35,7 +35,7 @@ public class VehiculoDaoImpl implements IVehiculoDao {
 
     @Override
     public Vehiculo buscarPorPlaca(String placa) {
-        String sql = "SELECT * FROM Vehiculo WHERE placa = ?"; // Consulta SQL para buscar un vehículo por su placa
+        String sql = "SELECT placa, modelo, color, id_tipo FROM Vehiculo WHERE placa = ?"; // Consulta SQL para buscar un vehículo por su placa
         Vehiculo vehiculo = null;
 
         try (Connection con = Conexion.conectar();
@@ -60,7 +60,7 @@ public class VehiculoDaoImpl implements IVehiculoDao {
 
     @Override
     public List<Vehiculo> listarTodos() {  // Consulta SQL para obtener todos los vehículos
-        String sql = "SELECT * FROM Vehiculo";
+        String sql = "SELECT placa, modelo, color, id_tipo FROM Vehiculo";
         List<Vehiculo> lista = new ArrayList<>();
 
         try (Connection con = Conexion.conectar();
