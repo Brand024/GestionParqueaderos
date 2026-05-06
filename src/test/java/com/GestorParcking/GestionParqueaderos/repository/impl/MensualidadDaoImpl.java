@@ -1,16 +1,19 @@
 package com.GestorParcking.GestionParqueaderos.repository.impl;
-
 import com.GestorParcking.GestionParqueaderos.models.Mensualidad;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MensualidadDaoImpl {
-
     private final List<Mensualidad> mensualidades = new ArrayList<>();
 
     public MensualidadDaoImpl() {
-        mensualidades.add(new Mensualidad(1, "ABC123", 300000));
-        mensualidades.add(new Mensualidad(2, "XYZ789", 250000));
+        // Usamos fechas actuales como ejemplo
+        Date hoy = new Date(System.currentTimeMillis());
+        Date fin = new Date(System.currentTimeMillis() + (30L * 24 * 60 * 60 * 1000)); // +30 días
+
+        mensualidades.add(new Mensualidad(1, "ABC123", hoy, fin, true));
+        mensualidades.add(new Mensualidad(2, "XYZ789", hoy, fin, false));
     }
 
     public List<Mensualidad> findAll() {
@@ -18,7 +21,6 @@ public class MensualidadDaoImpl {
     }
 
     public void deleteById(int id) {
-        mensualidades.removeIf(m -> m.getId() == id);
+        mensualidades.removeIf(m -> m.getId_mensualidad() == id);
     }
 }
-

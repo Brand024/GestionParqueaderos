@@ -4,6 +4,8 @@ import com.GestorParcking.GestionParqueaderos.models.Mensualidad;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 
 class MensualidadDaoImplTest {
 
@@ -24,5 +26,28 @@ class MensualidadDaoImplTest {
         List<Mensualidad> resultado = dao.findAll();
         assertEquals(1, resultado.size());
         assertEquals("XYZ789", resultado.get(0).getPlaca());
+    }
+
+    @Test
+    void testFindAllReturnsInitialMensualidades() {
+        MensualidadDaoImpl dao = new MensualidadDaoImpl();
+        List<Mensualidad> result = dao.findAll();
+        assertEquals(2, result.size());
+        assertEquals("ABC123", result.get(0).getPlaca());
+    }
+
+    @Test
+    void testDeleteByIdRemovesCorrectMensualidad() {
+        MensualidadDaoImpl dao = new MensualidadDaoImpl();
+        dao.deleteById(1);
+        assertEquals(1, dao.findAll().size());
+        assertFalse(dao.findAll().stream().anyMatch(m -> m.getId_mensualidad() == 1));
+    }
+
+    @Test
+    void testDeleteByIdWithNonExistingIdDoesNothing() {
+        MensualidadDaoImpl dao = new MensualidadDaoImpl();
+        dao.deleteById(99);
+        assertEquals(2, dao.findAll().size());
     }
 }

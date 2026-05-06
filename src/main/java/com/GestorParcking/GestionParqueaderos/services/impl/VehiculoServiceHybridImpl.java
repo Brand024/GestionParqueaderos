@@ -3,7 +3,7 @@ package com.GestorParcking.GestionParqueaderos.services.impl;
 import com.GestorParcking.GestionParqueaderos.entity.VehiculoEntity;
 import com.GestorParcking.GestionParqueaderos.entity.TipoVehiculoEntity;
 import com.GestorParcking.GestionParqueaderos.repository.jpa.VehiculoJpaRepository;
-import com.GestorParcking.GestionParqueaderos.repository.jpa.TipoVehiculoJpaRepository;
+import com.GestorParcking.GestionParqueaderos.repository.jpa.TipoVehidculoJpaRepository;
 import com.GestorParcking.GestionParqueaderos.repository.IVehiculoDao; // JDBC
 import com.GestorParcking.GestionParqueaderos.models.Vehiculo; // Modelo JDBC
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +20,12 @@ public class VehiculoServiceHybridImpl {
 
     // JPA
     private final VehiculoJpaRepository vehiculoJpaRepository;
-    private final TipoVehiculoJpaRepository tipoVehiculoJpaRepository;
+    private final TipoVehidculoJpaRepository tipoVehiculoJpaRepository;
 
     @Autowired
     public VehiculoServiceHybridImpl(IVehiculoDao vehiculoJdbcDao,
                                      VehiculoJpaRepository vehiculoJpaRepository,
-                                     TipoVehiculoJpaRepository tipoVehiculoJpaRepository) {
+                                     TipoVehidculoJpaRepository tipoVehiculoJpaRepository) {
         this.vehiculoJdbcDao = vehiculoJdbcDao;
         this.vehiculoJpaRepository = vehiculoJpaRepository;
         this.tipoVehiculoJpaRepository = tipoVehiculoJpaRepository;
