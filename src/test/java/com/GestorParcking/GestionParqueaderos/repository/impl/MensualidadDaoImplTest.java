@@ -11,7 +11,7 @@ class MensualidadDaoImplTest {
 
     @Test
     void listarTodas_debeRetornarListaCorrecta() {
-        MensualidadDaoImpl dao = new MensualidadDaoImpl();
+        MensualidadDaoMock dao = new MensualidadDaoMock();
         List<Mensualidad> resultado = dao.findAll();
 
         assertEquals(2, resultado.size());
@@ -20,7 +20,7 @@ class MensualidadDaoImplTest {
 
     @Test
     void eliminar_debeReducirLista() {
-        MensualidadDaoImpl dao = new MensualidadDaoImpl();
+        MensualidadDaoMock dao = new MensualidadDaoMock();
         dao.deleteById(1);
 
         List<Mensualidad> resultado = dao.findAll();
@@ -30,7 +30,7 @@ class MensualidadDaoImplTest {
 
     @Test
     void testFindAllReturnsInitialMensualidades() {
-        MensualidadDaoImpl dao = new MensualidadDaoImpl();
+        MensualidadDaoMock dao = new MensualidadDaoMock();
         List<Mensualidad> result = dao.findAll();
         assertEquals(2, result.size());
         assertEquals("ABC123", result.get(0).getPlaca());
@@ -38,7 +38,7 @@ class MensualidadDaoImplTest {
 
     @Test
     void testDeleteByIdRemovesCorrectMensualidad() {
-        MensualidadDaoImpl dao = new MensualidadDaoImpl();
+        MensualidadDaoMock dao = new MensualidadDaoMock();
         dao.deleteById(1);
         assertEquals(1, dao.findAll().size());
         assertFalse(dao.findAll().stream().anyMatch(m -> m.getId_mensualidad() == 1));
@@ -46,7 +46,7 @@ class MensualidadDaoImplTest {
 
     @Test
     void testDeleteByIdWithNonExistingIdDoesNothing() {
-        MensualidadDaoImpl dao = new MensualidadDaoImpl();
+        MensualidadDaoMock dao = new MensualidadDaoMock();
         dao.deleteById(99);
         assertEquals(2, dao.findAll().size());
     }
