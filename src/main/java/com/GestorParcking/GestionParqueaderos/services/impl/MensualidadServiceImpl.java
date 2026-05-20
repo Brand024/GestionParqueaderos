@@ -1,7 +1,9 @@
 package com.GestorParcking.GestionParqueaderos.services.impl;
 
-import com.GestorParcking.GestionParqueaderos.models.Mensualidad;
-import com.GestorParcking.GestionParqueaderos.repository.IMensualidadDao;
+import com.GestorParcking.GestionParqueaderos.entity.MensualidadEntity;
+import com.GestorParcking.GestionParqueaderos.entity.VehiculoEntity;
+import com.GestorParcking.GestionParqueaderos.repository.jpa.MensualidadJpaRepository;
+import com.GestorParcking.GestionParqueaderos.repository.jpa.VehiculoJpaRepository;
 import com.GestorParcking.GestionParqueaderos.services.IMensualidadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,37 +12,38 @@ import java.util.List;
 @Service
 public class MensualidadServiceImpl implements IMensualidadService {
 
-    private final IMensualidadDao mensualidadDao;
-
-    // Inyección de dependencia por constructor
     @Autowired
-    public MensualidadServiceImpl(IMensualidadDao mensualidadDao) {
-        this.mensualidadDao = mensualidadDao;
+    private MensualidadJpaRepository mensualidadJpaRepository;
+
+    @Autowired
+    private VehiculoJpaRepository vehiculoJpaRepository;
+
+    @Override
+    public void registrar(MensualidadEntity mensualidad) {
+        mensualidadJpaRepository.save(mensualidad);
     }
 
     @Override
-    public void registrar(Mensualidad mensualidad) {
-        mensualidadDao.registrar(mensualidad);
+    public List<MensualidadEntity> listarTodas() {
+        return mensualidadJpaRepository.findAll();
     }
 
     @Override
-    public List<Mensualidad> listarTodas() {
-        return mensualidadDao.listarTodas();
+    public MensualidadEntity buscarPorPlaca(String placa) {
+        VehiculoEntity vehiculo = vehiculoJpaRepository.findByPlaca(placa).orElse(null);
+        if (vehiculo != null) {
+            return mensualidadJpaRepository.findByVehiculo(vehiculo).orElse(null);
+        }
+        return null;
     }
 
     @Override
-    public Mensualidad buscarPorPlaca(String placa) {
-        return mensualidadDao.buscarPorPlaca(placa);
-    }
-
-    @Override
-    public void actualizar(Mensualidad mensualidad) {
-        mensualidadDao.actualizar(mensualidad);
+    public void actualizar(MensualidadEntity mensualidad) {
+        mensualidadJpaRepository.save(mensualidad);
     }
 
     @Override
     public void eliminar(int idMensualidad) {
-        mensualidadDao.eliminar(idMensualidad);
+        mensualidadJpaRepository.deleteById(idMensualidad);
     }
 }
-

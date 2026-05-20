@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 public class TipoVehiculoEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tipo")
     private Integer idTipo;
 
@@ -21,7 +20,8 @@ public class TipoVehiculoEntity {
     // Constructores
     public TipoVehiculoEntity() {}
 
-    public TipoVehiculoEntity(String nombre, BigDecimal tarifaMinuto) {
+    public TipoVehiculoEntity(Integer idTipo, String nombre, BigDecimal tarifaMinuto) {
+        this.idTipo = idTipo;
         this.nombre = nombre;
         this.tarifaMinuto = tarifaMinuto;
     }
