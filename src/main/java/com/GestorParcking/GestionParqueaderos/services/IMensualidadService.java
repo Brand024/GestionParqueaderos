@@ -7,6 +7,7 @@ public interface IMensualidadService {
     void registrar(MensualidadEntity mensualidad);
     List<MensualidadEntity> listarTodas();
     MensualidadEntity buscarPorPlaca(String placa);
+    MensualidadEntity buscarPorId(Integer id);  // ← NUEVO MÉTODO
     void actualizar(MensualidadEntity mensualidad);
     void eliminar(int idMensualidad);
 }

@@ -5,10 +5,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Mensualidad")  // ← ESPECIFICA EL NOMBRE EXACTO DE LA TABLA
+@Table(name = "Mensualidad")
 public class MensualidadEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // ← AGREGAR ESTO
     @Column(name = "id_mensualidad")
     private Integer idMensualidad;
 
@@ -31,7 +32,8 @@ public class MensualidadEntity {
     // Constructores
     public MensualidadEntity() {}
 
-    public MensualidadEntity(Integer idMensualidad, VehiculoEntity vehiculo, LocalDate fechaInicio, LocalDate fechaFin, Boolean pagado, BigDecimal valor) {
+    public MensualidadEntity(Integer idMensualidad, VehiculoEntity vehiculo, LocalDate fechaInicio,
+                             LocalDate fechaFin, Boolean pagado, BigDecimal valor) {
         this.idMensualidad = idMensualidad;
         this.vehiculo = vehiculo;
         this.fechaInicio = fechaInicio;
