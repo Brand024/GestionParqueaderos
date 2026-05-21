@@ -13,29 +13,28 @@ import java.util.List;
 public class MensualidadDaoImpl implements IMensualidadDao {
 
     @Override
-    public void registrar(Mensualidad mensualidad) {  // Inserta una nueva mensualidad con sus fechas, valor y estado de pago
-        String sql = "INSERT INTO Mensualidad (placa, fecha_inicio, fecha_fin, valor, pagado) VALUES (?, ?, ?, ?, ?)";
+    public void registrar(Mensualidad mensualidad) {
+        String sql = "INSERT INTO Mensualidad (id_mensualidad, placa, fecha_inicio, fecha_fin, valor, pagado) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection con = Conexion.conectar();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            // Asignamos los valores del objeto Mensualidad a la sentencia SQL
-            ps.setString(1, mensualidad.getPlaca());
-            ps.setDate(2, mensualidad.getFecha_inicio());
-            ps.setDate(3, mensualidad.getFecha_fin());
-            ps.setFloat(4, mensualidad.getValor());
-            ps.setBoolean(5, mensualidad.isPagado());
+            ps.setInt(1, mensualidad.getId_mensualidad());
+            ps.setString(2, mensualidad.getPlaca());
+            ps.setDate(3, mensualidad.getFecha_inicio());
+            ps.setDate(4, mensualidad.getFecha_fin());
+            ps.setFloat(5, mensualidad.getValor());
+            ps.setBoolean(6, mensualidad.isPagado());
 
             ps.executeUpdate();
             System.out.println("Mensualidad registrada con éxito.");
-
         } catch (SQLException e) {
             System.err.println("Error al registrar mensualidad: " + e.getMessage());
         }
     }
 
     @Override
-    public List<Mensualidad> listarTodas() {  // Consulta SQL para obtener todas las mensualidades
+    public List<Mensualidad> listarTodas() {
         String sql = "SELECT id_mensualidad, placa, fecha_inicio, fecha_fin, valor, pagado FROM Mensualidad";
         List<Mensualidad> lista = new ArrayList<>();
 
@@ -43,11 +42,10 @@ public class MensualidadDaoImpl implements IMensualidadDao {
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {  // Recorremos el resultado y construimos la lista de objetos Mensualidad
+            while (rs.next()) {
                 Mensualidad m = new Mensualidad();
                 m.setId_mensualidad(rs.getInt("id_mensualidad"));
                 m.setPlaca(rs.getString("placa"));
-                // Leemos el dato como Date de SQL
                 m.setFecha_inicio(rs.getDate("fecha_inicio"));
                 m.setFecha_fin(rs.getDate("fecha_fin"));
                 m.setValor(rs.getFloat("valor"));
@@ -61,16 +59,17 @@ public class MensualidadDaoImpl implements IMensualidadDao {
     }
 
     @Override
-    public Mensualidad buscarPorPlaca(String placa) {  // Busca una mensualidad asociada a la placa de un vehículo
+    public Mensualidad buscarPorPlaca(String placa) {
         String sql = "SELECT id_mensualidad, placa, fecha_inicio, fecha_fin, valor, pagado FROM Mensualidad WHERE placa = ?";
         Mensualidad m = null;
+
         try (Connection con = Conexion.conectar();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, placa);
             ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {  // Construimos el objeto Mensualidad con los datos obtenidos
+            if (rs.next()) {
                 m = new Mensualidad();
                 m.setId_mensualidad(rs.getInt("id_mensualidad"));
                 m.setPlaca(rs.getString("placa"));
@@ -86,7 +85,7 @@ public class MensualidadDaoImpl implements IMensualidadDao {
     }
 
     @Override
-    public void eliminar(int idMensualidad) {  // Elimina una mensualidad según su identificador único
+    public void eliminar(int idMensualidad) {
         String sql = "DELETE FROM Mensualidad WHERE id_mensualidad = ?";
         try (Connection con = Conexion.conectar();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -99,7 +98,7 @@ public class MensualidadDaoImpl implements IMensualidadDao {
     }
 
     @Override
-    public void actualizar(Mensualidad mensualidad) {  // Actualiza los datos de una mensualidad existente
+    public void actualizar(Mensualidad mensualidad) {
         String sql = "UPDATE Mensualidad SET placa = ?, fecha_inicio = ?, fecha_fin = ?, valor = ?, pagado = ? WHERE id_mensualidad = ?";
 
         try (Connection con = Conexion.conectar();
@@ -113,8 +112,7 @@ public class MensualidadDaoImpl implements IMensualidadDao {
             ps.setInt(6, mensualidad.getId_mensualidad());
 
             ps.executeUpdate();
-            System.out.println("Mensualidad actualizada en la base de datos.");
-
+            System.out.println("Mensualidad actualizada.");
         } catch (SQLException e) {
             System.err.println("Error al actualizar mensualidad: " + e.getMessage());
         }

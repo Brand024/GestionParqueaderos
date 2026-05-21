@@ -14,25 +14,34 @@ public class TicketDaoImpl implements ITicketDao {
 
     @Override
     public void generarTicketEntrada(Ticket ticket) {
-        // Usamos GETDATE() de SQL Server para la hora exacta de entrada
+        Ticket existente = buscarPorPlacaActivo(ticket.getPlaca());
+        if (existente != null) {
+            throw new RuntimeException("Ya existe un ticket activo para esta placa");
+        }
+
         String sql = "INSERT INTO Ticket (placa, id_espacio, hora_entrada, valor_total) VALUES (?, ?, GETDATE(), 0)";
 
-        try (Connection con = Conexion.conectar();  
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = Conexion.conectar();
+             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-              // Asignamos placa y espacio al ticket
             ps.setString(1, ticket.getPlaca());
             ps.setInt(2, ticket.getId_espacio());
-
             ps.executeUpdate();
-            System.out.println("Ticket de entrada generado.");
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                ticket.setId_ticket(rs.getInt(1));
+            }
+
+            System.out.println("✅ Ticket de entrada generado para: " + ticket.getPlaca());
 
         } catch (SQLException e) {
             System.err.println("Error al generar ticket: " + e.getMessage());
+            throw new RuntimeException("Error al generar ticket: " + e.getMessage(), e);
         }
     }
+
     @Override
-    // Busca un ticket activo (sin hora de salida) por placa
     public Ticket buscarPorPlacaActivo(String placa) {
         String sql = "SELECT id_ticket, placa, id_espacio, hora_entrada, hora_salida, valor_total FROM Ticket WHERE placa = ? AND hora_salida IS NULL";
         Ticket ticket = null;
@@ -43,12 +52,14 @@ public class TicketDaoImpl implements ITicketDao {
             ps.setString(1, placa);
             ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {  // Construimos el objeto Ticket con los datos obtenidos
+            if (rs.next()) {
                 ticket = new Ticket();
                 ticket.setId_ticket(rs.getInt("id_ticket"));
                 ticket.setPlaca(rs.getString("placa"));
                 ticket.setId_espacio(rs.getInt("id_espacio"));
                 ticket.setHora_entrada(rs.getString("hora_entrada"));
+                ticket.setHora_salida(rs.getString("hora_salida"));
+                ticket.setValor_total(rs.getFloat("valor_total"));
             }
         } catch (SQLException e) {
             System.err.println("Error al buscar ticket activo: " + e.getMessage());
@@ -56,35 +67,64 @@ public class TicketDaoImpl implements ITicketDao {
         return ticket;
     }
 
-
+    // ✅ Método normal - Calcula el valor (para vehículos SIN mensualidad)
     @Override
     public void registrarSalida(Ticket ticket) {
-        // 1. Buscamos la tarifa del vehículo y calculamos el total en una sola consulta
         String sql = "UPDATE T " +
                 "SET T.hora_salida = GETDATE(), " +
                 "    T.valor_total = DATEDIFF(MINUTE, T.hora_entrada, GETDATE()) * TV.tarifa_minuto " +
                 "FROM Ticket T " +
-                "JOIN Vehiculo V ON T.placa = V.placa " +
-                "JOIN TipoVehiculo TV ON V.id_tipo = TV.id_tipo " +
+                "INNER JOIN Vehiculo V ON T.placa = V.placa " +
+                "INNER JOIN TipoVehiculo TV ON V.id_tipo = TV.id_tipo " +
                 "WHERE T.id_ticket = ?";
 
         try (Connection con = Conexion.conectar();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, ticket.getId_ticket());
+            ps.executeUpdate();
 
-            int filas = ps.executeUpdate();
-            if (filas > 0) {
-                System.out.println("Salida registrada y aqui esta su monto por pagar");
+            // Obtener el valor calculado
+            String selectSql = "SELECT valor_total FROM Ticket WHERE id_ticket = ?";
+            try (PreparedStatement psSelect = con.prepareStatement(selectSql)) {
+                psSelect.setInt(1, ticket.getId_ticket());
+                ResultSet rs = psSelect.executeQuery();
+                if (rs.next()) {
+                    ticket.setValor_total(rs.getFloat("valor_total"));
+                    System.out.println("✅ Salida registrada (con cobro) - Total: $" + ticket.getValor_total());
+                }
             }
         } catch (SQLException e) {
             System.err.println("Error al registrar salida: " + e.getMessage());
+            throw new RuntimeException("Error al registrar salida: " + e.getMessage(), e);
         }
     }
 
+    // ✅ NUEVO MÉTODO - Solo registra salida sin calcular (para vehículos CON mensualidad)
+    @Override
+    public void registrarSalidaConMensualidad(Ticket ticket) {
+        String sql = "UPDATE Ticket " +
+                "SET hora_salida = GETDATE(), " +
+                "    valor_total = 0 " +
+                "WHERE id_ticket = ?";
+
+        try (Connection con = Conexion.conectar();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, ticket.getId_ticket());
+            ps.executeUpdate();
+
+            ticket.setValor_total(0);
+            System.out.println("✅ Salida registrada (mensualidad) - Total: $0");
+
+        } catch (SQLException e) {
+            System.err.println("Error al registrar salida con mensualidad: " + e.getMessage());
+            throw new RuntimeException("Error al registrar salida: " + e.getMessage(), e);
+        }
+    }
 
     @Override
-    public List<Ticket> listarHistorial() {  // Obtiene todos los tickets ordenados por hora de entrada (más recientes primero)
+    public List<Ticket> listarHistorial() {
         String sql = "SELECT id_ticket, placa, id_espacio, hora_entrada, hora_salida, valor_total FROM Ticket ORDER BY hora_entrada DESC";
         List<Ticket> lista = new ArrayList<>();
 
@@ -92,7 +132,7 @@ public class TicketDaoImpl implements ITicketDao {
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {  // Recorremos el resultado y construimos la lista de tickets
+            while (rs.next()) {
                 Ticket t = new Ticket();
                 t.setId_ticket(rs.getInt("id_ticket"));
                 t.setPlaca(rs.getString("placa"));
